@@ -1,0 +1,19 @@
+{
+  "name": "node_api_v1",
+  "version": "1.0.0",
+  "description": "node api",
+  "main": "index.js",
+  "scripts": {
+    "dev:server": "nodemon server.js",
+    "json:server": "json-server --watch data.json",
+    "debug": "nodemon --inspect server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.2",
+    "protobufjs": "^6.8.8"
+  }
+}
