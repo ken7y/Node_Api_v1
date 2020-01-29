@@ -4,19 +4,18 @@ const axios = require('axios');
 const protobuf = require('protobufjs');
 
 app.get('/', (req, res, next) => {
-    
     res.status(200).json({
         message:'it works'
     });
 });
-app.get('/vehicleid/:id', (req, res) => {
+app.get('/vehicleid/:tripid', (req, res) => {
     // req.params.id
     
     axios.get('https://api.transport.nsw.gov.au/v1/gtfs/vehiclepos/buses',
         {
-            headers:{
+        headers:{
         "Authorization" : "apikey Qc9idalrWCIhYSKgNA0AVDFYXFOuaStWG66W"
-                    },
+                },
             responseType:"arraybuffer"
         }
             )
@@ -27,8 +26,19 @@ app.get('/vehicleid/:id', (req, res) => {
             var FeedMessage = root.lookupType("transit_realtime.FeedMessage");
             var message = FeedMessage.decode(resp.data);
             FeedMessage.toObject(message)
-            var dankem = FeedMessage.toObject(message);
-            console.log(dankem);
+            var bigobj = FeedMessage.toObject(message);
+            var individualobj = bigobj.entity.filter((x) =>{ return x.id == req.params.tripid});
+
+
+            res.json({response: individualobj.map(function(d) {
+                return {
+                    id: d.id,
+                    positionLat: d.vehicle.position.latitude,
+                    positionLong: d.vehicle.position.longitude,
+                    occupancyStatus: d.vehicle.occupancyStatus
+                        };
+                    })
+            });
         }));
 });
 
