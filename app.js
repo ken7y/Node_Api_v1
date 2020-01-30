@@ -58,17 +58,29 @@ app.get('/rydetotownhall', (req, res) => {
             var FeedMessage = root.lookupType("transit_realtime.FeedMessage");
             var message = FeedMessage.decode(resp.data);
             FeedMessage.toObject(message)
-            res.json({response: testerino(FeedMessage.toObject(message))});
+            //1 is out bound
+            //0 is home bound
+
+            //7 is ryde
+            //8 is uni
+            res.json({response: testerino(FeedMessage.toObject(message))}, 7, 1);
     }));
 });
 
 module.exports = app;
 
 
-function testerino (FeedMessageObject){
+function testerino (FeedMessageObject, tripVariation){
             var filteredRoutes =  (FeedMessageObject.entity.filter((x) => {
                 let arr = x.id.split("_")
-                return arr[3] == "518" || arr[3] == "M52" || arr[3] == "515" || arr[3] == "520"
+
+                switch (tripVariation){
+                    case 7:
+                        return arr[3] == "518" || arr[3] == "M52" || arr[3] == "515" || arr[3] == "520"
+                    case 8:
+                        return arr[3] == "393" || arr[3] == "397" || arr[3] == "399" 
+                }
+
                 }))
 
             var filteredDirectionalRoutes =  (filteredRoutes.filter((x) => {
