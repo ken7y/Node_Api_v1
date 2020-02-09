@@ -164,7 +164,6 @@ function FilterData (FeedMessageObject, tripVariation, tripDestination){
                     id: d.id,
                     ArrivaleTime: d.tripUpdate.stopTimeUpdate.filter((x) => {
                         if (x.stopId == startStop) {
-                            console.log("dank");
                             return x.arrival.time.low;
                         }
                     })
