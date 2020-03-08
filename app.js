@@ -6,7 +6,8 @@ let temp = new Uint8Array;
 let isResolved;
 app.get('/', (req, res, next) => {
     res.status(200).json({
-        message:'it works'
+        health:'healthy',
+        endpoints : ['townhalltouni', 'rydetotownhall', 'townhalltoryde']
     });
     temp = axios.get('https://api.transport.nsw.gov.au/v1/gtfs/realtime/buses',
     {
