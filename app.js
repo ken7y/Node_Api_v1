@@ -37,11 +37,16 @@ app.get('/vehicleid/:tripid', (req, res) => {
             throw err;
             var FeedMessage = root.lookupType("transit_realtime.FeedMessage");
             var message = FeedMessage.decode(resp.data);
-            FeedMessage.toObject(message)
+            // FeedMessage.toObject(message)
             var bigobj = FeedMessage.toObject(message);
-            var individualobj = bigobj.entity.filter((x) =>{ return x.id == req.params.tripid});
+            console.log(bigobj)
+            console.log("start")            
+            var individualobj = bigobj.entity.filter((x) =>{ 
+                console.log(x.id)
+                return x.id == req.params.tripid});
+            console.log("end")            
 
-
+            console.log(individualobj);
             res.json({response: individualobj.map(function(d) {
                 return {
                     id: d.id,
@@ -163,11 +168,11 @@ function FilterData (FeedMessageObject, tripVariation, tripDestination){
             return smallData = filteredDirectionalRoutes.map(function(d) {
                 return {
                     id: d.id,
-                    ArrivaleTime: d.tripUpdate.stopTimeUpdate.filter((x) => {
+                    ArrivalTime: d.tripUpdate.stopTimeUpdate.filter((x) => {
                         if (x.stopId == startStop) {
                             return x.arrival.time.low;
                         }
                     })
                 };
-            }).filter((x) => x.ArrivaleTime.length > 0);
+            }).filter((x) => x.ArrivalTime.length > 0);
 }
